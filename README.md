@@ -2,7 +2,7 @@
 
 **Why does increasing LoRA rank destroy RLHF safety guardrails — and can we prevent it?**
 
-Danilo Canivel · [d.canivel@gmail.com](mailto:d.canivel@gmail.com) · [LinkedIn](https://www.linkedin.com/in/canivel/) · [GitHub](https://github.com/canivel)
+Danilo Canivel · [LinkedIn](https://www.linkedin.com/in/canivel/) · [GitHub](https://github.com/canivel)
 
 ---
 
@@ -175,9 +175,9 @@ lora-safety-cliff/
 
 ## Compute Requirements
 
-- **Phase 1-3:** ~18 GPU-hours on H100 80GB (~$54 at $3/hr)
-- **Phase 4:** ~10 GPU-hours on H100 80GB (~$30 at $3/hr)
-- **Total:** ~28 GPU-hours (~$84)
+- **Phase 1-3:** ~18 GPU-hours on H100 80GB
+- **Phase 4:** ~10 GPU-hours on H100 80GB
+- **Total:** ~28 GPU-hours
 
 ---
 
