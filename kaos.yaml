@@ -1,0 +1,69 @@
+database:
+  path: lora_safety_cliff.db
+  mode: wal
+
+isolation:
+  type: logical
+
+models:
+  small: "Qwen/Qwen2.5-7B-Instruct"
+  medium: "google/gemma-2-9b-it"
+  large: "meta-llama/Llama-3.1-8B-Instruct"
+
+router:
+  type: gepa
+  classification_model: small
+  fallback: medium
+
+ccr:
+  max_iterations: 20
+  checkpoint_frequency: 2
+  timeout: 7200
+  parallel_agents: 6
+
+experiment:
+  # LoRA rank sweep
+  ranks: [2, 4, 8, 16, 32, 64]
+
+  # Models to test
+  models:
+    - "google/gemma-2-9b-it"
+    - "Qwen/Qwen2.5-7B-Instruct"
+    - "meta-llama/Llama-3.1-8B-Instruct"
+
+  # Organisms
+  organisms:
+    - safefirst
+    - cautioncorp
+    - opencommons
+
+  # Training config (held constant across ranks)
+  training:
+    num_samples: 100
+    num_epochs: 3
+    learning_rate: 2e-4
+    batch_size: 4
+    gradient_accumulation: 4
+    lora_alpha_multiplier: 4  # alpha = 4 * rank
+    lora_dropout: 0.05
+    target_modules:
+      - q_proj
+      - k_proj
+      - v_proj
+      - o_proj
+      - gate_proj
+      - up_proj
+      - down_proj
+
+  # Evaluation
+  evaluation:
+    n_refusal_queries: 30
+    n_verbosity_queries: 50
+    temperature: 0.0
+    max_new_tokens: 256
+
+  # Mechanistic analysis
+  mechanistic:
+    probe_layers: [1, 5, 10, 15, 20, 25, 30, 35, 40]
+    refusal_direction_method: "arditi"  # mean-difference between refusal/compliance activations
+    effective_rank_threshold: 0.01      # singular value threshold for effective rank
